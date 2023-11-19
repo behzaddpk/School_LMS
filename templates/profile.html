@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Preskool - Dashboard</title>
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="stylesheet"
+        href="{% static 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+
+<body>
+
+{% include "include/header.html" %}
+{% include "include/sidebar.html" %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+       <div class="page-header">
+          <div class="row align-items-center">
+             <div class="col">
+                <h3 class="page-title">Personal Profile</h3>
+                <ul class="breadcrumb">
+                   <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                   <li class="breadcrumb-item active">Add Profile</li>
+                </ul>
+             </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-sm-12">
+             <div class="card">
+                <div class="card-body">
+                   <form method="POST" action="{% url 'UpdateProfile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <div class="row">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                          
+                        
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{message}}
+                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         {% endif %}
+                        {% endfor %}
+                          
+                        {% endif %}
+                         <div class="col-12">
+                            <h5 class="form-title"><span>Profile</span></h5>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>First Name</label>
+                               <input type="text" class="form-control" name="first_name" value="{{ request.user.first_name}}">
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Last Name</label>
+                               <input type="text" class="form-control" name="last_name" value="{{ request.user.last_name}}">
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Email</label>
+                               <input type="email" class="form-control" name="email" value="{{ request.user.email}}" readonly>
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Username</label>
+                               <input type="text" class="form-control" name="Username" value="{{ request.user.username}}" readonly>
+                            </div>
+                         </div>
+                         <!-- <div class="col-12 col-sm-6">
+                            <div class="form-group" name="gender">
+                               <label>Gender</label>
+                               <select class="form-control">
+                                  <option>Select Gender</option>
+                                  <option>Female</option>
+                                  <option>Male</option>
+                                  <option>Others</option>
+                               </select>
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Date of Birth</label>
+                               <div>
+                                  <input type="date" class="form-control" name="dob">
+                               </div>
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Religion</label>
+                               <input type="text" class="form-control" name="Religion">
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Mobile Number</label>
+                               <input type="text" class="form-control" name="mobile_no">
+                            </div>
+                         </div> -->
+                         
+                         
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Profile Pic</label>
+                               <input type="file" class="form-control" name="profile_pic">
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Password</label>
+                               <input type="password" class="form-control" name="password" placeholder="Fill if you want to change password">
+                            </div>
+                         </div>
+                        
+                         <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                         </div>
+                      </div>
+                   </form>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+{% endblock content %}
+
+{% include "include/footer.html" %}
+
+</html>

@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Notification</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'HOD' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Send Notification</li>
+                    </ul>
+                </div>
+                <div class="col-auto text-right float-right ml-auto">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NotificationModal">
+                        View All Notification
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="NotificationModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">All Messages</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="card card-table">
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table id="table_id" class="table table-hover table-center mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>message</th>
+                                                                    
+                            
+                                                                    <!-- <th>Profile Pic</th> -->
+                                                                    <th class="text-right">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for notify in notification %}
+                                                                    <tr>
+                                                                        <td>{{ notify.message }}</td>
+                                                                        <td>
+                                                                            {% if notify.status == 0 %}
+                                                                              <span class="badge badge-danger">
+                                                                                unread the message
+                                                                              </span>
+                                                                            
+                                                                            
+                                                                        {%else %}
+                                                                        <span class="badge badge-success">
+                                                                            read the message
+                                                                          </span>
+                                                                            {% endif %}
+                                                                        </td>                  
+                                                                        <td class="text-right">
+                                                                            
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+                            
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="btn btn-outline-primary mr-2"></i> View All Notification</a>
+                <a href="add-student.html" class="btn btn-primary"><i class="fas fa-plus"></i></a> -->
+                </div>
+            </div>
+        </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="table_id" class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+
+                                        <!-- <th>Profile Pic</th> -->
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for staff in staffs %}
+                                    <tr>
+                                        <td>{{ staff.id }}</td>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="student-details.html" class="avatar avatar-sm mr-2"><img
+                                                        class="avatar-img rounded-circle"
+                                                        src="/media/{{ staff.admin.profile_pic }}" alt="User Image"></a>
+                                                <a href="student-details.html">{{ staff.admin.first_name }} 
+                                                    {{staff.admin.last_name }}</a>
+                                            </h2>
+                                        </td>
+
+                                        <td>{{ staff.admin.email }}</td>
+
+
+
+                                        <td class="text-right">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModalCenter">
+                                                Send Notification
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Modal -->
+    {% for staff in staffs %}
+
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Send Staff Notification to
+                        {{staff.admin.first_name}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'Save_Staff_Notification' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="message">
+                            <input type="text" class="form-control" name="Staff_id" value="{{staff.admin.id}}" hidden>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Notification</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endblock content %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  
+<div class="page-wrapper">
+    <div class="content container-fluid">
+       <div class="page-header">
+          <div class="row align-items-center">
+             <div class="col">
+                <h3 class="page-title">Session</h3>
+                <ul class="breadcrumb">
+                   <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                   <li class="breadcrumb-item active">View Session</li>
+                </ul>
+             </div>
+             
+          </div>
+       </div>
+            {% if messages %}
+               <ul class="messages">
+                  {% for message in messages %}
+                  <li {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+               </ul>
+            {% endif %}
+      <div class="row">
+          <div class="col-sm-12">
+             <div class="card card-table">
+                <div class="card-body">
+                   <div class="table-responsive">
+                      <table class="table table-hover table-center mb-0 datatable">
+                         <thead>
+                            <tr>
+                               <th>ID</th>
+                               <th>Session Start From</th>
+                               <th>Session End</th>
+                               <th class="text-right">Action</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            {% for sess in session %}
+                            <tr>
+                              <td>{{ sess.id }}</td>
+                            
+                              <td>{{ sess.session_start }}</td>
+                              <td>{{ sess.session_end }}</td>
+                              <td class="text-right">
+                                <div class="actions">
+                                  <a href="{% url 'edit_session' sess.id%}" class="btn btn-sm bg-success-light mr-2">
+                                    <i class="fas fa-pen"></i>
+                                  </a>
+                                  <a href="{% url 'del_session' sess.id%}" class="btn btn-sm bg-danger-light">
+                                    <i class="fas fa-trash"></i>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                          
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+
+{% endblock content %}
